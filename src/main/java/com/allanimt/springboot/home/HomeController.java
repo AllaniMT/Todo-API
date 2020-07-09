@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
     @RequestMapping(value = "/")
-    public String helloWorldMethod()
-    {
+    public String helloWorldMethod() {
         return "Hello World :D";
     }
-    @GetMapping(value ="/{name}")
-    public String helloWithName(@PathVariable String name)
-    {
+
+    @GetMapping(value = "/{name}")
+    public String helloWithName(@PathVariable String name) {
         return String.format("Welcome, your name is: %s", name);
     }
 }
