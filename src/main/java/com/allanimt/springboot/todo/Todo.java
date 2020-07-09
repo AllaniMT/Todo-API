@@ -8,6 +8,9 @@ public class Todo
         this.description = description;
     }
 
+    //Default Constructor
+    public Todo(){}
+
     public int getId() {
         return id;
     }

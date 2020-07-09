@@ -1,10 +1,7 @@
 package com.allanimt.springboot.todo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,5 +23,17 @@ public class TodoController {
     @GetMapping(value = "/{id}")
     public Todo fetchTodoById(@PathVariable int id) {
         return todoService.getTodoById(id);
+    }
+
+    @PostMapping(value = {"", "/"})
+    public Todo addNewTodo(@RequestBody Todo todo) {
+        if (todoService.save(todo)) {
+            return todo;
+        }
+        return null;
+    }
+    @DeleteMapping(value = "/{id}")
+    public void deleteTodoById(@PathVariable int id) {
+        todoService.delete(id);
     }
 }
