@@ -3,7 +3,8 @@ package com.allanimt.springboot.todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
+
+import javax.validation.Valid;
 import java.util.List;
 
 //this is the Controller Layer! (For the HTTP Request)
@@ -21,19 +22,23 @@ public class TodoController {
     }
 
     @GetMapping(value = "/{id}")
-    public Todo fetchTodoById(@PathVariable int id) {
+    public Todo fetchTodoById(@PathVariable String id) {
         return todoService.getTodoById(id);
     }
 
     @PostMapping(value = {"", "/"})
-    public Todo addNewTodo(@RequestBody Todo todo) {
+    public Todo addNewTodo(@Valid @RequestBody Todo todo) {
+        /*
         if (todoService.save(todo)) {
             return todo;
         }
         return null;
+         */
+        return todoService.save(todo);
     }
+
     @DeleteMapping(value = "/{id}")
-    public void deleteTodoById(@PathVariable int id) {
+    public void deleteTodoById(@PathVariable String id) {
         todoService.delete(id);
     }
 }

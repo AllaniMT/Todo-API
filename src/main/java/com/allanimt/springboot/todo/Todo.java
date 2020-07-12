@@ -1,17 +1,26 @@
 package com.allanimt.springboot.todo;
 
-public class Todo
-{
-    public Todo(int id, String title, String description) {
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "todos")
+public class Todo {
+    public Todo(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
     }
 
     //Default Constructor
-    public Todo(){}
+    public Todo() {
+        this.timeStamp = System.currentTimeMillis();
+    }
 
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
@@ -23,7 +32,7 @@ public class Todo
         return description;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -35,7 +44,23 @@ public class Todo
         this.description = description;
     }
 
-    private int id;
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    @Id
+    private String id;
+
+    @NotNull(message= "Title is required")
+    @Size(min =3, message ="Title must at least 3 character")
     private String title;
+
+    @NotNull(message= "Description is required")
     private String description;
+
+    private long timeStamp;
 }
