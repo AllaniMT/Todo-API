@@ -3,6 +3,7 @@ package com.allanimt.springboot.todo;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,7 +19,6 @@ public class Todo {
     public Todo() {
         this.timeStamp = System.currentTimeMillis();
     }
-
 
     public String getId() {
         return id;
@@ -55,11 +55,11 @@ public class Todo {
     @Id
     private String id;
 
-    @NotNull(message= "Title is required")
-    @Size(min =3, message ="Title must at least 3 character")
+    @NotNull(message = "Title is required")
+    @Size(min = 3, message = "Title must at least 3 character")
     private String title;
 
-    @NotNull(message= "Description is required")
+    @NotNull(message = "Description is required")
     private String description;
 
     private long timeStamp;

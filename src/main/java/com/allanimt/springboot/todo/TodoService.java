@@ -1,5 +1,7 @@
 package com.allanimt.springboot.todo;
 
+import com.allanimt.springboot.error.ConflictException;
+import com.allanimt.springboot.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 //this is the Service Layer! (For the Business Logic)
 @Service
@@ -34,10 +37,18 @@ public class TodoService {
         }
         return null;
         */
-        return todoRepository.findById(id).get();
+        try {
+            return todoRepository.findById(id).get();
+        } catch (NoSuchElementException noSuchElementException) {
+            throw new NotFoundException(String.format("There is no todo with the id [%s] in our database", id));
+        }
+
     }
 
     public Todo save(Todo todo) {
+        if (todoRepository.findByTitle(todo.getTitle()) != null) {
+            throw new ConflictException("There is the same title in another todo");
+        }
         //return data.add(todo);
         return todoRepository.insert(todo);
     }
@@ -51,6 +62,8 @@ public class TodoService {
         }
          */
         todoRepository.deleteById(id);
+
+
     }
 }
 
