@@ -9,4 +9,9 @@ public class CalcTest {
         Calc myNewCalcObj = new Calc();
         assertThat(myNewCalcObj.calcSum(1,2)).isEqualTo(3);
     }
+    @Test
+    public void testGiveTwoNumberAndReturnTheirSub(){
+        Calc myNewCalcObj = new Calc();
+        assertThat(myNewCalcObj.calcSub(4,2)).isEqualTo(2);
+    }
 }
