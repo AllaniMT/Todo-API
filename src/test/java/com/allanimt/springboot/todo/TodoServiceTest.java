@@ -1,5 +1,6 @@
 package com.allanimt.springboot.todo;
 
+import com.allanimt.springboot.error.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 public class TodoServiceTest {
@@ -45,4 +47,17 @@ public class TodoServiceTest {
         //Test
         assertThat(todoService.getAllTodos()).hasSize(3).contains(todo1, todo2, todo3);
     }
+
+    @Test
+    public void testWhenGetTodoByIdReturnResult() {
+
+        //Mockup
+        Todo todo1 = new Todo("1", "Title 1", "Description 1");
+        given(todoRepository.findById(anyString())).willReturn(Optional.ofNullable(todo1));
+        Todo result = todoService.getTodoById("1");
+
+        //Test
+        assertThat(result.getTitle()).containsIgnoringCase("tItLe");
+    }
+
 }
