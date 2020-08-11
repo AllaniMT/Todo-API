@@ -20,11 +20,10 @@ public class FirstTimeInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         //Checking if there is users
-        //if not create some users
+        //if not, create some users
         if (userService.findAll().isEmpty()) {
-            logger.info("There is no user exist, created some users");
-
-            AppUser appUser = new AppUser("MohamedTayeb.Allani@Syncwork.de", "Mohamed", "Passowrd");
+            logger.info("**************There is no user exist, created some users**************");
+            AppUser appUser = new AppUser("MohamedTayeb.Allani@Syncwork.de", "Password", "Mohamed");
             userService.save(appUser);
         }
     }

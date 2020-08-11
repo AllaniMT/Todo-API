@@ -1,13 +1,23 @@
 package com.allanimt.springboot.security;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final String[] PUBLIC_ENTRYPOINTS = {
+    private final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/**"
     };
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -17,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //We use JWT, i don't need sessions
                 .and()
                 .authorizeRequests()
-                .antMatchers(PUBLIC_ENTRYPOINTS).permitAll() // all url from  PUBLIC_ENTRYPOTS auhorised
+                .antMatchers(PUBLIC_ENDPOINTS).permitAll() // all url from  PUBLIC_ENTRYPOTS auhorised
                 .anyRequest().authenticated() //Other urls need authentication
                 .and().httpBasic();
     }

@@ -1,5 +1,6 @@
 package com.allanimt.springboot.security;
 
+import com.allanimt.springboot.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.rmi.NotBoundException;
 import java.util.List;
 
 @Service
@@ -27,7 +29,14 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User("Mohamed", passwordEncoder().encode("Password"), AuthorityUtils.NO_AUTHORITIES);
+        // return new User("Mohamed", passwordEncoder().encode("Password"), AuthorityUtils.NO_AUTHORITIES);
+
+        AppUser user = userRepository.findByEmail(username);
+
+        if (user == null) {
+            throw new NotFoundException("User note found");
+        }
+        return user;
     }
 
     public void save(AppUser user) {
@@ -38,4 +47,6 @@ public class UserService implements UserDetailsService {
     public List<AppUser> findAll() {
         return userRepository.findAll();
     }
+
+
 }

@@ -3,14 +3,15 @@ package com.allanimt.springboot.security;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotEmpty;
-import javax.xml.crypto.Data;
 import java.util.Collection;
 import java.util.Date;
 
+@Document(collection = "users")
 public class AppUser implements UserDetails {
 
     @Id
@@ -33,14 +34,14 @@ public class AppUser implements UserDetails {
         return null;
     }
 
-    public AppUser(@NotEmpty String email, @NotEmpty String name, String password) {
+    public AppUser() {
+    }
+
+    public AppUser(@NotEmpty String email, @NotEmpty String password, @NotEmpty String name) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.created = new Date();
-    }
-
-    public AppUser() {
     }
 
     @Override
