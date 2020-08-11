@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -19,6 +20,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    @Bean
+    public AuthFilter authFilter(){
+        return new AuthFilter();
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
@@ -29,6 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(PUBLIC_ENDPOINTS).permitAll() // all url from  PUBLIC_ENTRYPOTS auhorised
                 .anyRequest().authenticated() //Other urls need authentication
-                .and().httpBasic();
+                .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

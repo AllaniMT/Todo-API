@@ -1,5 +1,6 @@
 package com.allanimt.springboot.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,35 @@ public class TokenUtility {
                 .compact();
 
         return builder;
+    }
+
+    public String getUserNameFromToken(String token) {
+        try {
+            Claims claims = getClaims(token);
+            return claims.getSubject();
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = getUserNameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        Date expiration = getClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
+    private Claims getClaims(String token) {
+        Claims claims;
+        try {
+            claims = Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(token).getBody();
+        } catch (Exception exception) {
+            claims = null;
+        }
+        return claims;
     }
 
     private Date generateExpirationDate() {
